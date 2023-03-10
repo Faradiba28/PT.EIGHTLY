@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  
+deletemobil.php
+<?php
+include ("koneksi.php");
+
+$no_mobil =@$_GET['id'];
+$sql="DELETE from mobil where no_mobil=$no_mobil";
+mysql_query($sql);
+if($sql){
+ ?>
+ <script type="text/javascript">
+  alert("Terhapus");
+  
+ </script>
+ <?php
+ header("Location: tampilmobil.php");
+ }
+
+
+?>
+
+
+deletepelanggan.php
+<?php 
+include ("koneksi.php");
+$ktp =@$_GET['id'];
+$sql="DELETE from pelanggan where ktp=$ktp";
+mysql_query($sql);
+if($sql){
+ ?>
+ <script type="text/javascript">
+  alert("Terhapus");
+  
+ </script>
+ <?php
+ header("Location: tampilpelanggan.php");
+ }
+
+?>
+
+
+
+deletepesanan.php
+<?php 
+include ("koneksi.php");
+$id_pesan = @$_GET['id'];
+$sql="DELETE from pesan where id_pesan=$id_pesan";
+mysql_query($sql);
+if($sql){
+ ?>
+ <script type="text/javascript">
+  alert("Terhapus");
+  
+ </script>
+ <?php
+ header("Location: tampilpesanan.php");
+ }
+
+?> 
+
+
+editmobil.php
+<?php 
+include "koneksi.php";
+   $no_mobil=$_GET['id'];
+   $sql = "SELECT * from mobil where no_mobil=$no_mobil";
+   $query = mysql_query($sql);
+   $data = mysql_fetch_array ($query);
+ ?>
+
+<html>
+<head>
+ <title>Pelanggan</title>
+</head>
+<body>
+<table>
+ <form action="editmobillagi.php" method="POST">
+  <tr>
+   <td>Nomor Mobil</td>
+   <td>:</td>
+   <td><input type="text" name="no_mobil" value="<?php echo $data['no_mobil'] ?>"></td>
+  </tr>
+  <tr>
+   <td>Merk</td>
+   <td>:</td>
+   <td>
+    <select name="type">
+     <option value="Toyota">Toyota</option>
+     <option value="Honda">Honda</option>
+     <option value="Suzuki">Suzuki</option>
+     <option value="Nissan">Nissan</option>
+     <option value="Isuzu">Isuzu</option>
+     <option value="Chevrolet">Chevrolet</option>
+     <option value="BMW">BMW</option>
+     <option value="Marcedes Bens">Marcedes Bens</option>
+     <option value="KIA">KIA</option>
+    </select>
+   </td>
+  </tr>
+  <tr>
+   <td>Harga sewa</td>
+   <td>:</td>
+   <td><input type="text" name="harga" value="<?php echo $data['harga'] ?>"></td>
+  </tr>
+  <tr>
+   <td></td>
+   <td></td>
+   <td><input type="submit" name="save" value="Save"></td>
+  </tr>
+ </form>
+</table>
+</body>
+</html>
+
+
+editmobillagi.php
+<?php 
+include "koneksi.php";
+
+$save = @$_POST['save'];
+if(isset($save)){
+ $no_mobil = @$_POST['no_mobil'];
+ $type = @$_POST['type'];
+ $harga = @$_POST['harga'];
+
+ $sql = "UPDATE mobil set no_mobil='$no_mobil', type='$type', harga='$harga' where no_mobil=$no_mobil";
+ $query = mysql_query($sql) or die (mysql_error());
+ if ($query){
+  echo "Berhasil di edit";
+  header("Location: tampilmobil.php");
+ }else{
+  echo "Gagal di edit";
+  header("Location: editmobil.php");
+ }
+}
+ ?>
+
+
+
+editpelanggan.php
+<?php
+ include "koneksi.php";
+ $ktp = @$_GET['id'];
+
+ $sql = "SELECT * from pelanggan where ktp='$ktp'";
+ $query = mysql_query($sql) or die (mysql_error());
+ $data = mysql_fetch_array ($query) or die (mysql_error());
+   ?>
+<html>
+<head>
+ <title>Pelanggan</title>
+</head>
+<body>
+<h1>Edit Data Pelangan</h1>
+<table>
+ <form action="editpelangganlagi.php" method="POST">
+  <tr>
+   <td>No KTP</td>
+   <td>:</td>
+   <td><input type="text" name="ktp" value="<?php echo $data['ktp'] ?>"></td>
+  </tr>
+  <tr>
+   <td>Nama</td>
+   <td>:</td>
+   <td><input type="text" name="nama" value="<?php echo $data['nama'] ?>"></td>
+  </tr>
+  <tr>
+   <td>Alamat</td>
+   <td>:</td>
+   <td><input type="text" name="alamat" value="<?php echo $data['alamat'] ?>"></u></td>
+  </tr>
+  <tr>
+   <td>No HP</td>
+   <td>:</td>
+   <td><input type="text" name="no_hp" value="<?php echo $data['no_hp'] ?>"></td>
+  </tr>
+  <?php  ?>
+  <tr>
+   <td></td>
+   <td></td>
+   <td><input type="submit" name="save" value="Save"></td>
+  </tr>
+ </form>
+</table>
+</body>
+</html>
+
+
+editpelangganlagi.php
+<?php 
+include "koneksi.php";
+
+$save = @$_POST['save'];
+if(isset($save)){
+ $nama = @$_POST['nama'];
+ $ktp = @$_POST['ktp'];
+ $alamat = @$_POST['alamat'];
+ $no_hp = @$_POST['no_hp'];
+
+ $sql = "UPDATE pelanggan set ktp='$ktp', nama='$nama', alamat='$alamat', no_hp='$no_hp'  where ktp='$ktp'";
+ $query = mysql_query($sql) or die (mysql_error());
+ if ($query){
+  echo "Berhasil di edit";
+  header("Location: tampilpelanggan.php");
+ }else{
+  echo "Gagal di edit";
+  header("Location: editpelanggan.php");
+ }
+}
+ ?>
+
+
+editpesanan.php
+<?php 
+include "koneksi.php";
+   $id_pesan=@$_GET['id_pesan'];
+   $sql = "SELECT * from pesan where id_pesan='$id_pesan'";
+   $query = mysql_query($sql);
+   $x = mysql_fetch_array ($query);
+ ?>
+<html>
+<head>
+ <title>Edit Pemesanan mobil</title>
+</head>
+<body>
+<h1>Edit Pesan mobil</h1>
+<form method="GET" action="editpesananlagi.php">
+ <table>
+  <tr>
+   <td>ID pemesanan</td>
+   <td>:</td>
+   <td><input type="text" name="id_pesan" value="<?php echo $x['id_pesan'] ?>"></td>
+  </tr>
+  <tr>
+   <td>pilih KTP pelanggan</td>
+   <td>:</td>
+   <td>
+    <select name="ktp">
+     <?php 
+     include "koneksi.php";
+   $sql = "SELECT * from pelanggan";
+   $query = mysql_query($sql);
+   while($data = mysql_fetch_array ($query)){
+      ?>
+     <option value="<?php echo $data['ktp']; ?>"><?php echo $data['ktp'] ?> (<?php echo $data['nama'] ?>)
+     </option>
+     <?php } ?>
+    </select>
+   </td>
+  </tr>
+    <tr>
+   <td>pilih No Mobil</td>
+   <td>:</td>
+   <td>
+    <select name="no_mobil">
+     <?php 
+     include "koneksi.php";
+   $sql = "SELECT * from mobil";
+   $sql1 = "SELECT * from pesan";
+   $query = mysql_query($sql);
+   $query1 = mysql_query($sql1);
+   
+   while($data1 = mysql_fetch_array ($query1)){ //pesan
+    while ($data = mysql_fetch_array($query)) { //mobil
+     if ($data['no_mobil'] != $data1['no_mobil']){
+    ?>
+      <option value="<?php echo $data['no_mobil']; ?>"><?php echo $data['no_mobil'] ?> (<?php echo $data['type'] ?>)
+      </option>
+    <?php 
+
+      }
+     }
+    }
+     ?>
+    </select>
+   </td>
+  </tr>
+  <tr>
+   <td>Lama meminjam</td>
+   <td>:</td>
+   <td><input type="text" name="hari" value="<?php echo $x['hari'] ?>"></td>
+  </tr>
+  <tr>
+   <td>Tanggal</td>
+   <td>:</td>
+<td><input type="date" name="tgl" value="<?php echo $x['tgl'] ?>"></td>
+  </tr>
+  <tr>
+   <td></td>
+   <td></td>
+   <td><input type="Submit" name="save" value="SIMPAN"></td>
+  </tr>
+ </table>
+</form>
+</body>
+</html>
+
+
+editpesananlagi.php
+<?php 
+include "koneksi.php";
+
+$save = @$_GET['save'];
+
+if(isset($save)){
+ $id_pesan = @$_GET['id_pesan'];
+ $ktp = @$_GET['ktp'];
+ $no_mobil = @$_GET['no_mobil'];
+ $hari = @$_GET['hari'];
+ $tgl = @$_GET['tgl'];
+ $sql = "UPDATE pesan set id_pesan='$id_pesan', ktp='$ktp', no_mobil='$no_mobil', hari='$hari', tgl='$tgl' where id_pesan='$id_pesan'";
+ $query = mysql_query($sql);
+ if ($query){
+  echo "Berhasil di edit";
+  header("Location: tampilpesanan.php");
+ }else{
+  echo "Gagal di edit";
+  header("Location: editpesanan.php");
+ }
+}
+
+ ?>
+
+
+
+index.php
+<!DOCTYPE html>
+<html>
+<head>
+ <title>POSTTEST 6</title>
+</head>
+<body>
+<h1>Sewa Mobil Mewah</h1>
+
+<h3>Menu</h3>
+<form action="tampilmobil.php" method="POST">
+<input type="submit" name="4" value="Tabel Mobil"></form><br/>
+<form action="tampilpelanggan.php" method="POST">
+<input type="submit" name="5" value="Tabel Pelanggan"></form><br/>
+<form action="tampilpesanan.php" method="POST">
+<input type="submit" name="6" value="Tabel Pesanan"></form><br/>
+<br>
+
+</body>
+</html>
+
+
+koneksi.php
+<?php 
+mysql_connect("localhost","root","");
+mysql_select_db("mobilan");
+
+ ?>
+
+
+
+mobil.php
+<?php 
+include "koneksi.php";
+ ?>
+
+<html>
+<head>
+ <title>Pelanggan</title>
+</head>
+<body>
+<table>
+ <form action="simpanmobil.php" method="POST">
+  <tr>
+   <td>Nomor Mobil</td>
+   <td>:</td>
+   <td><input type="text" name="no_mobil" ></td>
+  </tr>
+  <tr>
+   <td>Merk</td>
+   <td>:</td>
+   <td>
+    <select name="type">
+     <option value="Toyota">Toyota</option>
+     <option value="Honda">Honda</option>
+     <option value="Suzuki">Suzuki</option>
+     <option value="Nissan">Nissan</option>
+     <option value="Isuzu">Isuzu</option>
+     <option value="Chevrolet">Chevrolet</option>
+     <option value="BMW">BMW</option>
+     <option value="Marcedes Bens">Marcedes Bens</option>
+     <option value="KIA">KIA</option>
+    </select>
+   </td>
+  </tr>
+  <tr>
+   <td>Harga sewa</td>
+   <td>:</td>
+   <td><input type="text" name="harga" ></td>
+  </tr>
+  <tr>
+   <td></td>
+   <td></td>
+   <td><input type="submit" name="save" value="Save"></td>
+  </tr>
+ </form>
+</table>
+</body>
+</html>
+
+
+
+pelanggan.php
+<?php 
+include "koneksi.php";
+ ?>
+
+<html>
+<head>
+ <title>Pelanggan</title>
+</head>
+<body>
+<table>
+ <form action="simpanpelanggan.php" method="POST">
+  
+  <tr>
+   <td>Nama</td>
+   <td>:</td>
+   <td><input type="text" name="nama" ></td>
+  </tr>
+  <tr>
+   <td>Alamat</td>
+   <td>:</td>
+   <td><input type="text" name="alamat" ></u></td>
+  </tr>
+  <tr>
+   <td>Nomor HP</td>
+   <td>:</td>
+   <td><input type="text" name="no_hp" ></td>
+  </tr>
+  <tr>
+   <td>no kartu kredit</td>
+   <td>:</td>
+   <td><input type="text" name="ktp" ></td>
+  </tr>
+  <tr>
+   <td></td>
+   <td></td>
+   <td><input type="submit" name="save" value="Save"></td>
+  </tr>
+ </form>
+</table>
+</body>
+</html>
+
+
+pesanmobil.php
+<!DOCTYPE html>
+<html>
+<head>
+ <title>Pesan Mobil</title>
+</head>
+<body>
+<h1>Pesan Mobil</h1>
+<form method="POST" action="simpanpesan.php">
+ <table>
+  <tr>
+   <td>ID pemesanan</td>
+   <td>:</td>
+   <td><input type="text" name="id_pesan" placeholder="ID"></td>
+  </tr>
+  <tr>
+   <td>pilih KTP pelanggan</td>
+   <td>:</td>
+   <td>
+    <select name="ktp">
+     <?php 
+     include "koneksi.php";
+   $sql = "SELECT * from pelanggan";
+   $query = mysql_query($sql);
+   while($data = mysql_fetch_array ($query)){
+      ?>
+     <option value="<?php echo $data['ktp']; ?>"><?php echo $data['ktp'] ?> (<?php echo $data['nama'] ?>)
+     </option>
+     <?php } ?>
+    </select>
+   </td>
+  </tr>
+    <tr>
+   <td>Pilih nomor mobil</td>
+   <td>:</td>
+   <td>
+    <select name="no_mobil">
+    <option value="belum dipilih" selected="">-Pilih mobil-</option>
+     <?php 
+     include "koneksi.php";
+   $sql = "SELECT * from mobil";
+   $sql1 = "SELECT * from pesan";
+   $query = mysql_query($sql);
+   $query1 = mysql_query($sql1);
+   while($data1 = mysql_fetch_array ($query1)){ //pesan
+    while ($data = mysql_fetch_array($query)) { //mobil
+     if ($data['no_mobil'] != $data1['no_mobil']){
+    ?>
+      <option value="<?php echo $data['no_mobil']; ?>"><?php echo $data['no_mobil'] ?> (<?php echo $data['type'] ?>)
+      </option>
+    <?php 
+
+      }
+     }
+    }
+     ?>
+    </select>
+   </td>
+  </tr>
+  <tr>
+   <td>Lama pinjam</td>
+   <td>:</td>
+   <td><input type="text" name="hari"></td>
+  </tr>
+  <tr>
+   <td>Tanggal</td>
+   <td>:</td>
+   <td><input type="date" name="tgl"></td>
+  </tr>
+  <tr>
+   <td></td>
+   <td></td>
+   <td><input type="Submit" name="save" value="SIMPAN"></td>
+  </tr>
+ </table>
+</form>
+</body>
+</html>
+
+
+simpanmobil.php
+<?php 
+include "koneksi.php";
+
+$save = @$_POST['save'];
+if(isset($save)){
+ $no = @$_POST['no_mobil'];
+ $type = @$_POST['type'];
+ $harga = @$_POST['harga'];
+
+ $query = mysql_query("INSERT into mobil values ('$no','$harga','$type')") or die (mysql_error());
+ if ($query){
+  header("Location: tampilmobil.php");
+ }else{
+  header("Location: mobil.php");
+ }
+}
+
+ ?>
+
+
+simpanpelanggan.php
+<?php 
+include "koneksi.php";
+
+$save = @$_POST['save'];
+if(isset($save)){
+ $nama = @$_POST['nama'];
+ $ktp = @$_POST['ktp'];
+ $alamat = @$_POST['alamat'];
+ $no_hp = @$_POST['no_hp'];
+
+ $query = mysql_query("INSERT into pelanggan values ('$ktp','$nama','$alamat','$no_hp')") or die (mysql_error());
+ if ($query){
+  ?>
+  <script type="text/javascript">
+   alert ("Success");
+  </script>
+  <?php
+  header("Location: tampilpelanggan.php");
+ }else{
+  ?>
+  <script type="text/javascript">
+   alert ("Failed");
+  </script>
+  <?php
+  header("Location: pelanggan.php");
+ }
+}
+ ?>
+
+
+simpanpesan.php
+<?php 
+include "koneksi.php";
+
+$save = @$_POST['save'];
+
+if(isset($save)){
+ $id_pesan = @$_POST['id_pesan'];
+ $ktp = @$_POST['ktp'];
+ $no_mobil = @$_POST['no_mobil'];
+ $hari = @$_POST['hari'];
+ $tgl = @$_POST['tgl'];
+
+ $query = mysql_query("INSERT into pesan values ('$id_pesan','$ktp','$no_mobil','$hari','$tgl')");
+ if ($query){
+  header("Location: tampilpesanan.php");
+ }else{
+  header("Location: pesanmobil.php");
+ }
+}
+
+ ?>
+
+
+
+tampilmobil.php
+<?php include "koneksi.php"; ?>
+<html>
+<head>
+ <title>Tampil Mobil</title>
+</head>
+<body>
+<h1>Tampil Data Mobil</h1>
+<a href="mobil.php"><button>Tambah Data Mobil</button></a>
+<a href="index.php"><button>Menu</button></a>
+<br/><br/>
+ <table border="1">
+  <tr>
+   <td>No mobil</td>
+   <td>Merk</td>
+   <td>Harga</td>
+   <td>Option</td>
+  </tr>
+  <tr>
+  <?php 
+   $sql = "SELECT * from mobil";
+   $query = mysql_query($sql);
+   while($data = mysql_fetch_array ($query)){
+   ?>
+   <td><?php echo $data['no_mobil']; ?></td>
+   <td><?php echo $data['type']; ?></td>
+   <td><?php echo $data['harga']; ?></td>
+   <td>
+   <a href="deletemobil.php?id=<?php echo $data['no_mobil'];?>">Delete</a> | 
+   <a href="editmobil.php?id=<?php echo $data['no_mobil'];?>">Edit
+   </td>
+  </tr>
+  <?php } ?>
+ </table>
+</body>
+</html>
+
+
+
+tampilpelanggan.php
+<?php include "koneksi.php"; ?>
+<html>
+<head>
+ <title>Tampil Pelanggan</title>
+</head>
+<body>
+<h1>Tampil Data Pelanggan</h1>
+<a href="pelanggan.php"><button>Tambah Data Pelanggan</button></a>
+<a href="index.php"><button>Menu</button></a>
+<br/><br/>
+ <table border="1">
+  <tr>
+   <td>Nama</td>
+   <td>Alamat</td>
+   <td>No HP</td>
+   <td>KTP</td>
+   <td>Option</td>
+  </tr>
+  <tr>
+  <?php 
+   $sql = "SELECT * from pelanggan";
+   $query = mysql_query($sql);
+   while($data = mysql_fetch_array ($query)){
+   ?>
+   <td><?php echo $data['nama']; ?></td>
+   <td><?php echo $data['alamat']; ?></td>
+   <td><?php echo $data['no_hp']; ?></td>
+   <td><?php echo $data['ktp']; ?></td>
+   <td>
+   <a href="deletepelanggan.php?id=<?php echo $data['ktp'];?>">Delete</a> | 
+   <a href="editpelanggan.php?id=<?php echo $data['ktp'];?>">Edit
+   </td>
+  </tr>
+  <?php } ?>
+ </table>
+</body>
+</html>
+
+
+
+tampilpesanan.php
+<?php include "koneksi.php"; ?>
+<html>
+<head>
+ <title>Tampil Pesanan</title>
+</head>
+<body>
+<h1>Tampil Data Pemesan Mobil</h1>
+<a href="pesanmobil.php"><button>Tambah Data Pemesan Mobil</button></a>
+<a href="index.php"><button>Menu</button></a>
+<br/><br/>
+ <table border="2">
+  <tr>
+   <td>ID</td>
+   <td>Nama</td>
+   <td>Nomor mobil</td>
+   <td>Tanggal pinjam</td>
+   <td>Hari</td>
+   <td>Total biaya</td>
+   <td>Option</td>
+  </tr>
+  <tr>
+
+  <?php 
+  $sql = "SELECT pesan.id_pesan, pelanggan.nama, mobil.no_mobil, pesan.tgl, pesan.hari, mobil.harga from pesan, pelanggan, mobil where pelanggan.ktp=pesan.ktp and mobil.no_mobil=pesan.no_mobil";
+   $query = mysql_query($sql) or die(mysql_error());
+   while($data = mysql_fetch_array ($query)){
+   ?>
+   <td><?php echo $data['id_pesan']; ?></td>
+   <td><?php echo $data['nama']; ?></td>
+   <td><?php echo $data['no_mobil']; ?></td>
+   <td><?php echo $data['tgl']; ?></td>
+   <td><?php echo $data['hari']; ?></td>
+   <?php 
+   $hari = $data['hari'];
+   $harga = $data['harga'];
+   $total = $hari*$harga ?>
+   <td><?php echo $total; ?></td>
+   <td>
+   <a href="deletepesanan.php?id=<?php echo $data['id_pesan'];?>">Delete</a> | 
+   <a href="editpesanan.php?id_pesan=<?php echo $data['id_pesan'];?>">Edit
+   </td>
+  </tr>
+  <?php } ?>
+ </table>
+</body>
+</html>
